@@ -15,32 +15,7 @@
             this.moduleDefinition = moduleDefinition;
 
             SetAssembly(name);
-        }
-
-        void SetAssembly(String name)
-        {
-            var assemblyReference = new AssemblyNameReference(name, Version.Parse("0.0.0.0"));
-            assemblydefinition = moduleDefinition.AssemblyResolver.Resolve(assemblyReference);
-
-            if (assemblydefinition is null)
-                throw new ArgumentNullException($"Assembly not found");
-        }
-
-        TypeDefinition GetTypeDefinition(String fullname)
-        {
-            var typeDefinition = assemblydefinition.MainModule.GetTypes()
-                .SingleOrDefault(_ => _.FullName == fullname);
-
-            if (typeDefinition is null)
-                throw new ArgumentNullException($"Type not found");
-
-            return typeDefinition;
-        }
-
-        TypeReference GetTypeReference(TypeDefinition typeDefinition)
-        {
-            return moduleDefinition.ImportReference(typeDefinition);
-        }
+        }  
 
         public TypeReference GetTypeReference(String fullname)
         {
@@ -73,12 +48,30 @@
                     .FirstOrDefault();
             }
 
-            if (methodDefinition is null)
-                throw new ArgumentNullException($"Method not found");
+            methodDefinition.IfNull($"Method {nameMethod}");
 
             var methodReference = typeReference.Module.ImportReference(methodDefinition);
 
             return methodReference;
+        }
+
+        void SetAssembly(String name)
+        {
+            var assemblyReference = new AssemblyNameReference(name, Version.Parse("0.0.0.0"));
+            assemblydefinition = moduleDefinition.AssemblyResolver.Resolve(assemblyReference)
+                .IfNull($"Assembly {assemblyReference.Name}");
+        }
+
+        TypeReference GetTypeReference(TypeDefinition typeDefinition)
+        {
+            return moduleDefinition.ImportReference(typeDefinition);
+        }
+
+        TypeDefinition GetTypeDefinition(String fullname)
+        {
+            return assemblydefinition.MainModule.GetTypes()
+                .SingleOrDefault(_ => _.FullName == fullname)
+                .IfNull($"Type {fullname}");
         }
     }
 }

@@ -17,9 +17,9 @@ public class Weaver_Test
     [Fact]
     void First()
     {
-        var type = testResult.Assembly.GetType("AssemblyToProcess.Expected");
+        var type = testResult.Assembly.GetType("AssemblyToProcess.DemoPUTO");
         var instance = (dynamic)Activator.CreateInstance(type);
 
-        var name = instance.Name2;
+        //var name = instance.Name2;
     }
 }

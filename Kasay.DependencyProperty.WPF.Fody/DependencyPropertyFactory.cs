@@ -8,7 +8,7 @@ partial class ModuleWeaver
     void DependencyPropertyFactory(TypeDefinition typeDefinition)
     {
         AddDependencyPropertyField(typeDefinition);
-        //EqualDependencyPropertyField(typeDefinition);
+        EqualDependencyPropertyField(typeDefinition);
         //EqualDataContextInCtor(typeDefinition);
     }
 
@@ -32,8 +32,8 @@ partial class ModuleWeaver
             MethodAttributes.RTSpecialName | MethodAttributes.Static,
             TypeSystem.VoidReference);
 
-        var callTypeOf = this.GetMethodReference("System.Type", "GetTypeFromHandle");
-        var callRegister = customAssembly.GetMethodReference("Custom.UWP.DependencyProperty", "Register");
+        var callTypeOf = ModuleDefinition.GetMethodReference("System.Type", "GetTypeFromHandle");
+        var callRegister = wpfAssembly.GetMethodReference("System.Windows.DependencyProperty", "Register", 3);
 
         var processor = method.Body.GetILProcessor();
         processor.Emit(OpCodes.Ldstr, "Demo");
