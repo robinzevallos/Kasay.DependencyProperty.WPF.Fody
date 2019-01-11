@@ -6,21 +6,18 @@ using System.Linq;
 partial class ModuleWeaver
 {
     FieldDefinition dependencyPropertyField;
-    PropertyDefinition targetPropertyDefinition;
 
-    void DependencyPropertyFactory(TypeDefinition typeDefinition)
+    void DependencyPropertyFactory(TypeDefinition typeDefinition, PropertyDefinition propertyDefinition)
     {
-        AddDependencyPropertyField(typeDefinition);
-        EqualDependencyPropertyField(typeDefinition);
-        //EqualDataContextInCtor(typeDefinition);
-        GetProperty(typeDefinition);
-        ModifyGetMethod();
-        ModifySetMethod();
+        AddDependencyPropertyField(typeDefinition, propertyDefinition);
+        EqualDependencyPropertyField(typeDefinition, propertyDefinition);
+        ModifyGetMethod(propertyDefinition);
+        ModifySetMethod(propertyDefinition);
     }
 
-    void AddDependencyPropertyField(TypeDefinition typeDefinition)
+    void AddDependencyPropertyField(TypeDefinition typeDefinition, PropertyDefinition propertyDefinition)
     {
-        var nameField = $"DemoProperty";
+        var nameField = $"{propertyDefinition.Name}Property";
 
         dependencyPropertyField = new FieldDefinition(
             nameField,
@@ -30,83 +27,59 @@ partial class ModuleWeaver
         typeDefinition.Fields.Add(dependencyPropertyField);
     }
 
-    void EqualDependencyPropertyField(TypeDefinition typeDefinition)
+    void EqualDependencyPropertyField(TypeDefinition typeDefinition, PropertyDefinition propertyDefinition)
     {
-        var method = new MethodDefinition(
-            ".cctor",
-            MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.SpecialName |
-            MethodAttributes.RTSpecialName | MethodAttributes.Static,
-            TypeSystem.VoidReference);
+        var method = typeDefinition.GetStaticConstructor();
 
+        var nameProperty = propertyDefinition.Name;
+        var typeProperty = propertyDefinition.PropertyType;
         var callTypeOf = ModuleDefinition.GetMethodReference("System.Type", "GetTypeFromHandle");
         var callRegister = baseAssembly.GetMethodReference("System.Windows.DependencyProperty", "Register", 3);
 
+        method.Body.Instructions.RemoveAt(method.Body.Instructions.Count - 1);
+
         var processor = method.Body.GetILProcessor();
-        processor.Emit(OpCodes.Ldstr, "Demo");
-        processor.Emit(OpCodes.Ldtoken, TypeSystem.StringReference);
+        processor.Emit(OpCodes.Ldstr, nameProperty);
+        processor.Emit(OpCodes.Ldtoken, typeProperty);
         processor.Emit(OpCodes.Call, callTypeOf);
         processor.Emit(OpCodes.Ldtoken, typeDefinition);
         processor.Emit(OpCodes.Call, callTypeOf);
         processor.Emit(OpCodes.Call, callRegister);
         processor.Emit(OpCodes.Stsfld, dependencyPropertyField);
         processor.Emit(OpCodes.Ret);
-
-        typeDefinition.Methods.Add(method);
     }
 
-    void EqualDataContextInCtor(TypeDefinition typeDefinition)
-    {
-        var method = typeDefinition.GetConstructors().First();
-
-        var callGet_Content = presentationAssembly.GetMethodReference("System.Windows.Controls.ContentControl", "get_Content");
-        var frameworkElement = presentationAssembly.GetTypeReference("System.Windows.FrameworkElement");
-        var callPut_DataContext = presentationAssembly.GetMethodReference("System.Windows.FrameworkElement", "set_DataContext");
-
-        method.Body.Instructions.RemoveAt(method.Body.Instructions.Count - 1);
-
-        var processor = method.Body.GetILProcessor();
-        processor.Emit(OpCodes.Nop);
-        processor.Emit(OpCodes.Ldarg_0);
-        processor.Emit(OpCodes.Call, callGet_Content);
-        processor.Emit(OpCodes.Castclass, frameworkElement);
-        processor.Emit(OpCodes.Ldarg_0);
-        processor.Emit(OpCodes.Callvirt, callPut_DataContext);
-        processor.Emit(OpCodes.Nop);
-        processor.Emit(OpCodes.Ret);
-    }
-
-    void GetProperty(TypeDefinition typeDefinition)
-    {
-        targetPropertyDefinition = typeDefinition.Properties.Single(_ => _.Name == "Demo");
-    }
-
-    void ModifyGetMethod()
+    void ModifyGetMethod(PropertyDefinition propertyDefinition)
     {
         var callGetValue = baseAssembly.GetMethodReference("System.Windows.DependencyObject", "GetValue");
+        var typeProperty = propertyDefinition.PropertyType;
 
-        targetPropertyDefinition.GetMethod.Body.Instructions.Clear();
+        propertyDefinition.GetMethod.Body.Instructions.Clear();
 
-        var processor = targetPropertyDefinition.GetMethod.Body.GetILProcessor();
+        var processor = propertyDefinition.GetMethod.Body.GetILProcessor();
+        processor.Emit(OpCodes.Nop);
         processor.Emit(OpCodes.Ldarg_0);
         processor.Emit(OpCodes.Ldsfld, dependencyPropertyField);
         processor.Emit(OpCodes.Call, callGetValue);
-        processor.Emit(OpCodes.Castclass, TypeSystem.StringReference);
+        processor.Emit(OpCodes.Unbox_Any, typeProperty);
         processor.Emit(OpCodes.Ret);
     }
 
-    void ModifySetMethod()
+    void ModifySetMethod(PropertyDefinition propertyDefinition)
     {
+        var typeProperty = propertyDefinition.PropertyType;
         var callSetValue = baseAssembly.GetMethodReference("System.Windows.DependencyObject", "SetValue");
 
-        targetPropertyDefinition.SetMethod.Body.Instructions.Clear();
+        propertyDefinition.SetMethod.Body.Instructions.Clear();
 
-        var processor = targetPropertyDefinition.SetMethod.Body.GetILProcessor();
+        var processor = propertyDefinition.SetMethod.Body.GetILProcessor();
+        processor.Emit(OpCodes.Nop);
         processor.Emit(OpCodes.Ldarg_0);
         processor.Emit(OpCodes.Ldsfld, dependencyPropertyField);
         processor.Emit(OpCodes.Ldarg_1);
+        processor.Emit(OpCodes.Box, typeProperty);
         processor.Emit(OpCodes.Call, callSetValue);
         processor.Emit(OpCodes.Nop);
         processor.Emit(OpCodes.Ret);
     }
-
 }

@@ -16,13 +16,26 @@ namespace AssemblyToProcess
         }
 
         public static readonly DependencyProperty NameProperty2 =
-            DependencyProperty.Register("Name2", typeof(String), typeof(Expected), null);
+            DependencyProperty.Register("Name2", typeof(String), typeof(Expected));
 
         public String Name2
         {
             get { return (String)GetValue(NameProperty2); }
             set { SetValue(NameProperty2, value); }
         }
+
+
+        public int Pollo
+        {
+            get { return (int)GetValue(PolloProperty); }
+            set { SetValue(PolloProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Pollo.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PolloProperty =
+            DependencyProperty.Register("Pollo", typeof(int), typeof(Expected));
+
+
 
 
 

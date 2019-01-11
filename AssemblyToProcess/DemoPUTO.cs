@@ -7,6 +7,8 @@ namespace AssemblyToProcess
     [AutoDependencyProperty]
     public class DemoPUTO : UserControl
     {
-        public String Demo { get; set; }
+        //public String Demo { get; set; }
+
+        public int Pollo { get; set; }
     }
 }
