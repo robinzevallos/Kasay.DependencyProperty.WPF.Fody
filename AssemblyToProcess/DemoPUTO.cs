@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kasay.DependencyProperty.WPF;
+using System;
+using System.Windows.Controls;
 
 namespace AssemblyToProcess
 {
-    public class DemoPUTO
+    [AutoDependencyProperty]
+    public class DemoPUTO : UserControl
     {
+        public String Demo { get; set; }
     }
 }

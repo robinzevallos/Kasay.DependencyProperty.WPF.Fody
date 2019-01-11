@@ -5,11 +5,17 @@ using System.Linq;
 
 partial class ModuleWeaver
 {
+    FieldDefinition dependencyPropertyField;
+    PropertyDefinition targetPropertyDefinition;
+
     void DependencyPropertyFactory(TypeDefinition typeDefinition)
     {
         AddDependencyPropertyField(typeDefinition);
         EqualDependencyPropertyField(typeDefinition);
         //EqualDataContextInCtor(typeDefinition);
+        GetProperty(typeDefinition);
+        ModifyGetMethod();
+        ModifySetMethod();
     }
 
     void AddDependencyPropertyField(TypeDefinition typeDefinition)
@@ -19,7 +25,7 @@ partial class ModuleWeaver
         dependencyPropertyField = new FieldDefinition(
             nameField,
             FieldAttributes.Public | FieldAttributes.Static | FieldAttributes.InitOnly,
-            wpfAssembly.GetTypeReference("System.Windows.DependencyProperty"));
+            baseAssembly.GetTypeReference("System.Windows.DependencyProperty"));
 
         typeDefinition.Fields.Add(dependencyPropertyField);
     }
@@ -33,7 +39,7 @@ partial class ModuleWeaver
             TypeSystem.VoidReference);
 
         var callTypeOf = ModuleDefinition.GetMethodReference("System.Type", "GetTypeFromHandle");
-        var callRegister = wpfAssembly.GetMethodReference("System.Windows.DependencyProperty", "Register", 3);
+        var callRegister = baseAssembly.GetMethodReference("System.Windows.DependencyProperty", "Register", 3);
 
         var processor = method.Body.GetILProcessor();
         processor.Emit(OpCodes.Ldstr, "Demo");
@@ -51,9 +57,10 @@ partial class ModuleWeaver
     void EqualDataContextInCtor(TypeDefinition typeDefinition)
     {
         var method = typeDefinition.GetConstructors().First();
-        var callGet_Content = wpfAssembly.GetMethodReference("Windows.UI.Xaml.Controls.UserControl", "get_Content");
-        var frameworkElement = wpfAssembly.GetTypeReference("Windows.UI.Xaml.FrameworkElement");
-        var callPut_DataContext = wpfAssembly.GetMethodReference("Windows.UI.Xaml.FrameworkElement", "put_DataContext");
+
+        var callGet_Content = presentationAssembly.GetMethodReference("System.Windows.Controls.ContentControl", "get_Content");
+        var frameworkElement = presentationAssembly.GetTypeReference("System.Windows.FrameworkElement");
+        var callPut_DataContext = presentationAssembly.GetMethodReference("System.Windows.FrameworkElement", "set_DataContext");
 
         method.Body.Instructions.RemoveAt(method.Body.Instructions.Count - 1);
 
@@ -67,4 +74,39 @@ partial class ModuleWeaver
         processor.Emit(OpCodes.Nop);
         processor.Emit(OpCodes.Ret);
     }
+
+    void GetProperty(TypeDefinition typeDefinition)
+    {
+        targetPropertyDefinition = typeDefinition.Properties.Single(_ => _.Name == "Demo");
+    }
+
+    void ModifyGetMethod()
+    {
+        var callGetValue = baseAssembly.GetMethodReference("System.Windows.DependencyObject", "GetValue");
+
+        targetPropertyDefinition.GetMethod.Body.Instructions.Clear();
+
+        var processor = targetPropertyDefinition.GetMethod.Body.GetILProcessor();
+        processor.Emit(OpCodes.Ldarg_0);
+        processor.Emit(OpCodes.Ldsfld, dependencyPropertyField);
+        processor.Emit(OpCodes.Call, callGetValue);
+        processor.Emit(OpCodes.Castclass, TypeSystem.StringReference);
+        processor.Emit(OpCodes.Ret);
+    }
+
+    void ModifySetMethod()
+    {
+        var callSetValue = baseAssembly.GetMethodReference("System.Windows.DependencyObject", "SetValue");
+
+        targetPropertyDefinition.SetMethod.Body.Instructions.Clear();
+
+        var processor = targetPropertyDefinition.SetMethod.Body.GetILProcessor();
+        processor.Emit(OpCodes.Ldarg_0);
+        processor.Emit(OpCodes.Ldsfld, dependencyPropertyField);
+        processor.Emit(OpCodes.Ldarg_1);
+        processor.Emit(OpCodes.Call, callSetValue);
+        processor.Emit(OpCodes.Nop);
+        processor.Emit(OpCodes.Ret);
+    }
+
 }

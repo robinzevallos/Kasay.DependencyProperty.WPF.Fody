@@ -15,9 +15,18 @@ public class Weaver_Test
     }
 
     [Fact]
-    void First()
+    void AutoProperty_Test()
     {
         var type = testResult.Assembly.GetType("AssemblyToProcess.DemoPUTO");
+        var instance = (dynamic)Activator.CreateInstance(type);
+
+        //var name = instance.Name2;
+    }
+
+    [Fact]
+    void Expected_Test()
+    {
+        var type = testResult.Assembly.GetType("AssemblyToProcess.Expected");
         var instance = (dynamic)Activator.CreateInstance(type);
 
         //var name = instance.Name2;

@@ -82,5 +82,11 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kasay.DependencyProperty.WPF\Kasay.DependencyProperty.WPF.csproj">
+      <Project>{999a313f-bc9e-44ee-b1be-df710d65ab7d}</Project>
+      <Name>Kasay.DependencyProperty.WPF</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

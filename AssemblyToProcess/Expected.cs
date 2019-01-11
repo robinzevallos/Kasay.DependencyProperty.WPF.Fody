@@ -10,7 +10,11 @@ namespace AssemblyToProcess
 {
     public class Expected : UserControl
     {
-        // Using a DependencyProperty as the backing store for Name.  This enables animation, styling, binding, etc...
+        public Expected()
+        {
+            //((FrameworkElement)Content).DataContext = this;
+        }
+
         public static readonly DependencyProperty NameProperty2 =
             DependencyProperty.Register("Name2", typeof(String), typeof(Expected), null);
 
