@@ -3,6 +3,7 @@ using Kasay.DependencyProperty.WPF.Fody;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +11,17 @@ public partial class ModuleWeaver : BaseModuleWeaver
 {
     AssemblyFactory baseAssembly;
     AssemblyFactory presentationAssembly;
+
+    Boolean isModeTest;
+
+    public ModuleWeaver()
+    {
+    }
+
+    public ModuleWeaver(Boolean isModeTest) : this()
+    {
+        this.isModeTest = isModeTest;
+    }
 
     public override void Execute()
     {
@@ -32,7 +44,9 @@ public partial class ModuleWeaver : BaseModuleWeaver
 
             if (isTargetType)
             {
-                EqualDataContextInCtor(type);
+                if (!isModeTest)
+                    EqualDataContextInCtor(type);
+
                 AddStaticConstructor(type);
 
                 foreach (var prop in type.Properties)

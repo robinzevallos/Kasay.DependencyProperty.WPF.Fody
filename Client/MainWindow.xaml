@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <StackPanel Margin="20">
-        <local:DemoControl TextButton="lalo"/>
+        <local:DemoControl TextButton="lalo" FontSizeButton="25"/>
     </StackPanel>
 </Window>
