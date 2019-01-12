@@ -1,18 +1,16 @@
 ﻿using Fody;
 using Kasay.DependencyProperty.WPF.Fody;
 using Mono.Cecil;
-using Mono.Cecil.Cil;
-using Mono.Cecil.Rocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class ModuleWeaver : BaseModuleWeaver
+public class ModuleWeaver : BaseModuleWeaver
 {
+    readonly Boolean isModeTest;
+
     AssemblyFactory baseAssembly;
     AssemblyFactory presentationAssembly;
-
-    Boolean isModeTest;
 
     public ModuleWeaver()
     {
@@ -44,56 +42,13 @@ public partial class ModuleWeaver : BaseModuleWeaver
 
             if (isTargetType)
             {
-                if (!isModeTest)
-                    EqualDataContextInCtor(type);
-
-                AddStaticConstructor(type);
+                new ConstructorImplementer(presentationAssembly, type, isModeTest);
 
                 foreach (var prop in type.Properties)
                 {
-                    DependencyPropertyFactory(type, prop);
+                    new DependencyPropertyFactory(baseAssembly, prop);
                 }
             }
-        }
-    }
-
-    void EqualDataContextInCtor(TypeDefinition typeDefinition)
-    {
-        var method = typeDefinition.GetConstructors().First();
-
-        var callGet_Content = presentationAssembly.GetMethodReference("System.Windows.Controls.ContentControl", "get_Content");
-        var frameworkElement = presentationAssembly.GetTypeReference("System.Windows.FrameworkElement");
-        var callPut_DataContext = presentationAssembly.GetMethodReference("System.Windows.FrameworkElement", "set_DataContext");
-
-        method.Body.Instructions.RemoveAt(method.Body.Instructions.Count - 1);
-
-        var processor = method.Body.GetILProcessor();
-        processor.Emit(OpCodes.Nop);
-        processor.Emit(OpCodes.Ldarg_0);
-        processor.Emit(OpCodes.Call, callGet_Content);
-        processor.Emit(OpCodes.Castclass, frameworkElement);
-        processor.Emit(OpCodes.Ldarg_0);
-        processor.Emit(OpCodes.Callvirt, callPut_DataContext);
-        processor.Emit(OpCodes.Nop);
-        processor.Emit(OpCodes.Ret);
-    }
-
-    void AddStaticConstructor(TypeDefinition typeDefinition)
-    {
-        var method = typeDefinition.GetStaticConstructor();
-
-        if (method is null)
-        {
-            method = new MethodDefinition(
-                ".cctor",
-                MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.SpecialName |
-                MethodAttributes.RTSpecialName | MethodAttributes.Static,
-                TypeSystem.VoidReference);
-
-            var processor = method.Body.GetILProcessor();
-            processor.Emit(OpCodes.Ret);
-
-            typeDefinition.Methods.Add(method);
         }
     }
 

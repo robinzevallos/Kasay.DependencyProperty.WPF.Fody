@@ -3,12 +3,12 @@
     using Mono.Cecil;
     using System;
     using System.Linq;
-    using Mono.Cecil.Rocks;
 
     public class AssemblyFactory
     {
-        AssemblyDefinition assemblydefinition;
         readonly ModuleDefinition moduleDefinition;
+
+        AssemblyDefinition assemblydefinition;
 
         public AssemblyFactory(String name, ModuleDefinition moduleDefinition)
         {
