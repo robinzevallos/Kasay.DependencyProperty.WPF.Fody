@@ -4,14 +4,14 @@
     using Mono.Cecil.Cil;
     using Mono.Cecil.Rocks;
 
-    public class DependencyPropertyFactory
+    internal class DependencyPropertyFactory
     {
         readonly AssemblyFactory baseAssembly;
         readonly PropertyDefinition propertyDefinition;
 
         TypeDefinition typeDefinition;
-        FieldDefinition dependencyPropertyField;
         ModuleDefinition moduleDefinition;
+        FieldDefinition dependencyPropertyField;
 
         public DependencyPropertyFactory(AssemblyFactory baseAssembly, PropertyDefinition propertyDefinition)
         {

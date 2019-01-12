@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <Authors>Robin Zevallos</Authors>
+    <Version>1.0.1</Version>  
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <DisableFody>true</DisableFody>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>$(MSBuildProjectName).Fody</PackageId>
+    <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);IncludeFodyFiles</TargetsForTfmSpecificContentInPackage>
+    <WeaverDirPath>..\$(PackageId)\bin\$(Configuration)\</WeaverDirPath>
+    <WeaverPropsFile>$(MSBuildThisFileDirectory)Weaver.props</WeaverPropsFile>
+  </PropertyGroup>
+</Project>

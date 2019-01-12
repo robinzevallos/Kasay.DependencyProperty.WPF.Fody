@@ -8,8 +8,8 @@
 
     internal class ConstructorImplementer
     {
-        AssemblyFactory presentationAssembly;
-        TypeDefinition typeDefinition;
+        readonly AssemblyFactory presentationAssembly;
+        readonly TypeDefinition typeDefinition;
 
         ModuleDefinition moduleDefinition;
 

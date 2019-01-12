@@ -30,5 +30,4 @@ public static class ModuleDefinitionExtension
 
         return reference;
     }
-
 }
