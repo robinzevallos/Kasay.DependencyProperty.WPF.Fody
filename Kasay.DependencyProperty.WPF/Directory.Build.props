@@ -2,7 +2,14 @@
 <Project>
   <PropertyGroup>
     <Authors>Robin Zevallos</Authors>
-    <Version>1.0.1</Version>  
+    <Description>Auto DependencyProperty in WPF with Fody.</Description>
+    <PackageTags>ILWeaving, Fody, Cecil, WPF, Binding, DependencyProperty</PackageTags>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageIconUrl>https://raw.githubusercontent.com/robinzevallos/Kasay.DependencyProperty.WPF.Fody/master/kasay_icon.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/robinzevallos/Kasay.DependencyProperty.WPF.Fody</PackageProjectUrl>
   </PropertyGroup>
   
   <PropertyGroup>
