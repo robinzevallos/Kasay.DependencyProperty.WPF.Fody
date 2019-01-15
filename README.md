@@ -34,7 +34,7 @@ Add `<Kasay.DependencyProperty.WPF/>` to [FodyWeavers.xml](https://github.com/Fo
 Before code:
 
 ```csharp
-[AutoDependencyProperty]
+    [AutoDependencyProperty]
     public class SomeControl : UserControl
     {
         public String SomeName { get; set; }
@@ -48,7 +48,7 @@ Before code:
 What gets compiled:
 
 ```csharp
-public class SomeControl : UserControl
+    public class SomeControl : UserControl
     {
         public static readonly DependencyProperty SomeNameProperty =
            DependencyProperty.Register("SomeName", typeof(String), typeof(ExpectedControl));
