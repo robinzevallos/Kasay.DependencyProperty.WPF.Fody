@@ -16,7 +16,7 @@ Install the [Kasay.DependencyProperty.WPF.Fody NuGet package](https://www.nuget.
 PM> Install-Package Kasay.DependencyProperty.WPF.Fody -Version 1.0.0	
 ```
 ### Add to FodyWeavers.xml
-it's generated automatically in the second build, after the installation
+it's generated automatically after build.
 
 Add `<Kasay.DependencyProperty.WPF/>` to [FodyWeavers.xml](https://github.com/Fody/Fody#add-fodyweaversxml)
 
