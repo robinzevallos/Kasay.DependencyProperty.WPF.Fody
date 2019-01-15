@@ -2,4 +2,4 @@
 
 ![Icon](https://raw.githubusercontent.com/robinzevallos/Kasay.DependencyProperty.WPF.Fody/master/kasay_icon.png)
       
-
+Implement automatically [`DependencyPropety`](https://docs.microsoft.com/en-us/dotnet/framework/wpf/advanced/how-to-implement-a-dependency-property) in WPF.
