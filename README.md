@@ -49,7 +49,7 @@ What gets compiled:
     public class SomeControl : UserControl
     {
         public static readonly DependencyProperty SomeNameProperty =
-           DependencyProperty.Register("SomeName", typeof(String), typeof(ExpectedControl));
+           DependencyProperty.Register("SomeName", typeof(String), typeof(SomeControl));
 
         public String SomeName
         {
@@ -58,7 +58,7 @@ What gets compiled:
         }
 
         public static readonly DependencyProperty SomeNumberProperty =
-          DependencyProperty.Register("SomeNumber", typeof(Int32), typeof(ExpectedControl));
+          DependencyProperty.Register("SomeNumber", typeof(Int32), typeof(SomeControl));
 
         public Int32 SomeNumber
         {
@@ -67,7 +67,7 @@ What gets compiled:
         }
 
         public static readonly DependencyProperty SomeConditionProperty =
-          DependencyProperty.Register("SomeCondition", typeof(Boolean), typeof(ExpectedControl));
+          DependencyProperty.Register("SomeCondition", typeof(Boolean), typeof(SomeControl));
 
         public Boolean SomeCondition
         {
