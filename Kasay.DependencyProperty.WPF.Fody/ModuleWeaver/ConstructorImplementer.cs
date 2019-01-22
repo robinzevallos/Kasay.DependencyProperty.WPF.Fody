@@ -1,5 +1,6 @@
 ﻿namespace Kasay.DependencyProperty.WPF.Fody
 {
+    using Kasay.FodyHelpers;
     using Mono.Cecil;
     using Mono.Cecil.Cil;
     using Mono.Cecil.Rocks;
@@ -16,14 +17,14 @@
         public ConstructorImplementer(
             AssemblyFactory presentationAssembly, 
             TypeDefinition typeDefinition,
-            Boolean isModeTest)
+            Boolean isTest)
         {
             this.presentationAssembly = presentationAssembly;
             this.typeDefinition = typeDefinition;
 
             moduleDefinition = typeDefinition.Module;
 
-            if (!isModeTest)
+            if (!isTest)
                 EqualDataContext();
 
             AddStaticConstructor();

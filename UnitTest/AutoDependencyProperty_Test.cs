@@ -11,9 +11,9 @@ public class AutoDependencyProperty_Test
 
     public AutoDependencyProperty_Test()
     {
-        var weavingTask = new ModuleWeaver(true);
+        var weavingTask = new ModuleWeaver() { IsTest = true };
         var testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll");
-        type = testResult.Assembly.GetType("AssemblyToProcess.SomeControl");
+        type = testResult.Assembly.GetType("AssemblyToProcess.DemoControl");
         instance = (dynamic)Activator.CreateInstance(type);
     }
 

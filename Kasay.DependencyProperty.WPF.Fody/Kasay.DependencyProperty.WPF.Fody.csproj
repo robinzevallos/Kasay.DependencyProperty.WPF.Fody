@@ -2,14 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FodyHelpers" Version="3.3.5" />
+    <PackageReference Include="Kasay.FodyHelpers" Version="1.0.1" />
   </ItemGroup>
-
-  <!--<Target Name="Any" AfterTargets="Build">
+  
+  <Target Name="Any" AfterTargets="Build">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SolutionDir)\packages\$(PackageId)" />
-  </Target>-->
+    <Copy SourceFiles="$(OutDir)Kasay.FodyHelpers.dll" DestinationFolder="$(SolutionDir)\packages\$(PackageId)" />
+  </Target>
 
 </Project>

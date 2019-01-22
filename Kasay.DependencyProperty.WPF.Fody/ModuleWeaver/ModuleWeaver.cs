@@ -1,25 +1,16 @@
 ﻿using Fody;
 using Kasay.DependencyProperty.WPF.Fody;
+using Kasay.FodyHelpers;
 using Mono.Cecil;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class ModuleWeaver : BaseModuleWeaver
 {
-    readonly Boolean isModeTest;
-
     AssemblyFactory baseAssembly;
     AssemblyFactory presentationAssembly;
 
-    public ModuleWeaver()
-    {
-    }
-
-    public ModuleWeaver(Boolean isModeTest) : this()
-    {
-        this.isModeTest = isModeTest;
-    }
+    public Boolean IsTest { get; set; }
 
     public override void Execute()
     {
@@ -37,16 +28,14 @@ public class ModuleWeaver : BaseModuleWeaver
     {
         foreach (var type in ModuleDefinition.GetTypes())
         {
-            var isTargetType = type.CustomAttributes
-                .Any(_ => _.AttributeType.Name == "AutoDependencyPropertyAttribute");
-
-            if (isTargetType)
+            if (type.InheritFrom("System.Windows.FrameworkElement"))
             {
-                new ConstructorImplementer(presentationAssembly, type, isModeTest);
+                new ConstructorImplementer(presentationAssembly, type, IsTest);
 
                 foreach (var prop in type.Properties)
                 {
-                    new DependencyPropertyFactory(baseAssembly, prop);
+                    if (prop.ExistAttribute("BindAttribute"))
+                        new DependencyPropertyFactory(baseAssembly, prop);
                 }
             }
         }

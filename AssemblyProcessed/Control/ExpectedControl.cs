@@ -1,4 +1,4 @@
-﻿namespace AssemblyToProcess
+﻿namespace AssemblyProcessed
 {
     using System;
     using System.Windows;
@@ -31,6 +31,11 @@
         {
             get => (Boolean)GetValue(SomeConditionProperty);
             set => SetValue(SomeConditionProperty, value);
+        }
+
+        public ExpectedControl()
+        {
+            ((FrameworkElement)Content).DataContext = this;
         }
     }
 }

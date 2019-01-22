@@ -1,5 +1,6 @@
 ﻿namespace Kasay.DependencyProperty.WPF.Fody
 {
+    using Kasay.FodyHelpers;
     using Mono.Cecil;
     using Mono.Cecil.Cil;
     using Mono.Cecil.Rocks;

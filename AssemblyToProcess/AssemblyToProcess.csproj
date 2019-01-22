@@ -48,8 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpectedControl.cs" />
-    <Compile Include="SomeControl.cs" />
+    <Compile Include="DemoControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
