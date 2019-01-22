@@ -45,10 +45,10 @@ public class DemoControl : UserControl
 What gets compiled:
 
 ```csharp
-public class SomeControl : UserControl
+public class DemoControl : UserControl
 {
   public static readonly DependencyProperty SomeNameProperty =
-     DependencyProperty.Register("SomeName", typeof(String), typeof(SomeControl));
+     DependencyProperty.Register("SomeName", typeof(String), typeof(DemoControl));
 
   public String SomeName
   {
@@ -57,7 +57,7 @@ public class SomeControl : UserControl
   }
 
   public static readonly DependencyProperty SomeNumberProperty =
-    DependencyProperty.Register("SomeNumber", typeof(Int32), typeof(SomeControl));
+    DependencyProperty.Register("SomeNumber", typeof(Int32), typeof(DemoControl));
 
   public Int32 SomeNumber
   {
@@ -66,7 +66,7 @@ public class SomeControl : UserControl
   }
 
   public static readonly DependencyProperty SomeConditionProperty =
-    DependencyProperty.Register("SomeCondition", typeof(Boolean), typeof(SomeControl));
+    DependencyProperty.Register("SomeCondition", typeof(Boolean), typeof(DemoControl));
 
   public Boolean SomeCondition
   {
