@@ -1,6 +1,6 @@
 ﻿namespace AssemblyProcessed
 {
-    using Kasay.DependencyProperty;
+    using Kasay;
     using System;
     using System.Windows.Controls;
 

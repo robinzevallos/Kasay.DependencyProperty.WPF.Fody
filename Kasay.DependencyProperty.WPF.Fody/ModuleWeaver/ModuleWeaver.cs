@@ -1,16 +1,12 @@
 ﻿using Fody;
-using Kasay.DependencyProperty.WPF.Fody;
 using Kasay.FodyHelpers;
 using Mono.Cecil;
-using System;
 using System.Collections.Generic;
 
 public class ModuleWeaver : BaseModuleWeaver
 {
     AssemblyFactory baseAssembly;
     AssemblyFactory presentationAssembly;
-
-    public Boolean IsTest { get; set; }
 
     public override void Execute()
     {
@@ -30,7 +26,7 @@ public class ModuleWeaver : BaseModuleWeaver
         {
             if (type.InheritFrom("System.Windows.FrameworkElement"))
             {
-                new ConstructorImplementer(presentationAssembly, type, IsTest);
+                new ConstructorImplementer(presentationAssembly, type);
 
                 foreach (var prop in type.Properties)
                 {

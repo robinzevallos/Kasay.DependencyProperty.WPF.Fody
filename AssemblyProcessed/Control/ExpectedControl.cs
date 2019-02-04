@@ -6,8 +6,8 @@
 
     public class ExpectedControl : UserControl
     {
-        public static readonly DependencyProperty SomeNameProperty =
-           DependencyProperty.Register("SomeName", typeof(String), typeof(ExpectedControl));
+        public static readonly DependencyProperty SomeNameProperty 
+            = DependencyProperty.Register("SomeName", typeof(String), typeof(ExpectedControl));
 
         public String SomeName
         {
@@ -15,8 +15,8 @@
             set => SetValue(SomeNameProperty, value);
         }
 
-        public static readonly DependencyProperty SomeNumberProperty =
-          DependencyProperty.Register("SomeNumber", typeof(Int32), typeof(ExpectedControl));
+        public static readonly DependencyProperty SomeNumberProperty 
+            = DependencyProperty.Register("SomeNumber", typeof(Int32), typeof(ExpectedControl));
 
         public Int32 SomeNumber
         {
@@ -24,8 +24,8 @@
             set => SetValue(SomeNumberProperty, value);
         }
 
-        public static readonly DependencyProperty SomeConditionProperty =
-          DependencyProperty.Register("SomeCondition", typeof(Boolean), typeof(ExpectedControl));
+        public static readonly DependencyProperty SomeConditionProperty 
+            = DependencyProperty.Register("SomeCondition", typeof(Boolean), typeof(ExpectedControl));
 
         public Boolean SomeCondition
         {
@@ -35,7 +35,7 @@
 
         public ExpectedControl()
         {
-            ((FrameworkElement)Content).DataContext = this;
+            DataContext = this;
         }
     }
 }

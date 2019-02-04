@@ -1,6 +1,6 @@
-﻿namespace AssemblyToProcess
+﻿namespace AssemblyToProcess.pueblo
 {
-    using Kasay.DependencyProperty;
+    using Kasay;
     using System;
     using System.Windows.Controls;
 

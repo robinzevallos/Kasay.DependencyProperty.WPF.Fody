@@ -6,13 +6,14 @@ using System.Windows;
 
 public class AutoDependencyProperty_Test
 {
-    Type type;
-    dynamic instance;
+    readonly Type type;
+    readonly dynamic instance;
 
     public AutoDependencyProperty_Test()
     {
-        var weavingTask = new ModuleWeaver() { IsTest = true };
+        var weavingTask = new ModuleWeaver();
         var testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll");
+
         type = testResult.Assembly.GetType("AssemblyToProcess.DemoControl");
         instance = (dynamic)Activator.CreateInstance(type);
     }
@@ -21,7 +22,7 @@ public class AutoDependencyProperty_Test
     [InlineData("SomeName", "Lalo")]
     [InlineData("SomeNumber", 14)]
     [InlineData("SomeCondition", true)]
-    void AutoProperty_Test(String propertyName, Object value)
+    public void AutoProperty_Test(String propertyName, Object value)
     {
         var dependencyProperty = (DependencyProperty)type.GetField($"{propertyName}Property").GetValue(null);
         instance.GetType().GetProperty(propertyName).SetValue(instance, value);

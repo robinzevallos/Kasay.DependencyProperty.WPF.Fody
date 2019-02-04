@@ -1,4 +1,4 @@
-﻿namespace Kasay.DependencyProperty
+﻿namespace Kasay
 {
     using System;
 
