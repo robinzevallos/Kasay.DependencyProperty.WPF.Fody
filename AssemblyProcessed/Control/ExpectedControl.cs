@@ -7,7 +7,10 @@
     public class ExpectedControl : UserControl
     {
         public static readonly DependencyProperty SomeNameProperty 
-            = DependencyProperty.Register("SomeName", typeof(String), typeof(ExpectedControl));
+            = DependencyProperty.Register(
+                "SomeName", 
+                typeof(String), 
+                typeof(ExpectedControl));
 
         public String SomeName
         {
@@ -16,7 +19,10 @@
         }
 
         public static readonly DependencyProperty SomeNumberProperty 
-            = DependencyProperty.Register("SomeNumber", typeof(Int32), typeof(ExpectedControl));
+            = DependencyProperty.Register(
+                "SomeNumber", 
+                typeof(Int32), 
+                typeof(ExpectedControl));
 
         public Int32 SomeNumber
         {
@@ -25,7 +31,10 @@
         }
 
         public static readonly DependencyProperty SomeConditionProperty 
-            = DependencyProperty.Register("SomeCondition", typeof(Boolean), typeof(ExpectedControl));
+            = DependencyProperty.Register(
+                "SomeCondition", 
+                typeof(Boolean),
+                typeof(ExpectedControl));
 
         public Boolean SomeCondition
         {
