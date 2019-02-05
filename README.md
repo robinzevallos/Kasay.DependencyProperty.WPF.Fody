@@ -83,7 +83,7 @@ public class DemoControl : UserControl
         set => SetValue(SomeConditionProperty, value);
     }
 
-    public ExpectedControl()
+    public DemoControl()
     {
         DataContext = this;
     }
