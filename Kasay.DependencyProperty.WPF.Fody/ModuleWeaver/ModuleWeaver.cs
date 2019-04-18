@@ -24,7 +24,7 @@ public class ModuleWeaver : BaseModuleWeaver
     {
         foreach (var type in ModuleDefinition.GetTypes())
         {
-            if (type.InheritFrom("System.Windows.FrameworkElement"))
+            if (type.InheritFrom("System.Windows.DependencyObject"))
             {
                 new ConstructorImplementer(presentationAssembly, type);
 

@@ -22,19 +22,22 @@ internal class ConstructorImplementer
 
     void EqualDataContext()
     {
-        var method = typeDefinition.GetConstructors().First();
+        if (typeDefinition.InheritFrom("System.Windows.FrameworkElement"))
+        {
+            var method = typeDefinition.GetConstructors().First();
 
-        var callSet_DataContext = presentationAssembly.GetMethodReference("System.Windows.FrameworkElement", "set_DataContext");
+            var callSet_DataContext = presentationAssembly.GetMethodReference("System.Windows.FrameworkElement", "set_DataContext");
 
-        method.Body.Instructions.RemoveAt(method.Body.Instructions.Count - 1);
+            method.Body.Instructions.RemoveAt(method.Body.Instructions.Count - 1);
 
-        var processor = method.Body.GetILProcessor();
-        processor.Emit(OpCodes.Nop);
-        processor.Emit(OpCodes.Ldarg_0);
-        processor.Emit(OpCodes.Ldarg_0);
-        processor.Emit(OpCodes.Call, callSet_DataContext);
-        processor.Emit(OpCodes.Nop);
-        processor.Emit(OpCodes.Ret);
+            var processor = method.Body.GetILProcessor();
+            processor.Emit(OpCodes.Nop);
+            processor.Emit(OpCodes.Ldarg_0);
+            processor.Emit(OpCodes.Ldarg_0);
+            processor.Emit(OpCodes.Call, callSet_DataContext);
+            processor.Emit(OpCodes.Nop);
+            processor.Emit(OpCodes.Ret);
+        }
     }
 
     void AddStaticConstructor()
