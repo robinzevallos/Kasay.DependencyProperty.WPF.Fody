@@ -1,20 +1,19 @@
 ﻿using System;
-using Xunit;
-using Fody;
 using System.Windows;
-#pragma warning disable 618
+using Fody;
+using Xunit;
 
-public class AutoDependencyProperty_Test
+public class AutoDependencyPropertyDependencyObject_Test
 {
     readonly Type type;
     readonly dynamic instance;
 
-    public AutoDependencyProperty_Test()
+    public AutoDependencyPropertyDependencyObject_Test()
     {
         var weavingTask = new ModuleWeaver();
         var testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll");
 
-        type = testResult.Assembly.GetType("AssemblyToProcess.pueblo.DemoControl");
+        type = testResult.Assembly.GetType("AssemblyToProcess.pueblo.DemoDependencyObject");
         instance = (dynamic)Activator.CreateInstance(type);
     }
 
@@ -29,11 +28,5 @@ public class AutoDependencyProperty_Test
 
         Assert.Equal(value, instance.GetType().GetProperty(propertyName).GetValue(instance));
         Assert.Equal(value, instance.GetValue(dependencyProperty));
-    }
-
-    [Fact]
-    public void DataContext_Test()
-    {
-        Assert.Equal(instance, instance.DataContext);
     }
 }
